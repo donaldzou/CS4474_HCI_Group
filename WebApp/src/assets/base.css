@@ -1,0 +1,11 @@
+@import "bootstrap/dist/css/bootstrap.css";
+@import "bootstrap-icons/font/bootstrap-icons.min.css";
+
+#app{
+    width: 100vw;
+    height: 100vh;
+}
+
+.btn-primary, .btn-primary.active{
+    background-color: rgb(88 139 219);
+}
