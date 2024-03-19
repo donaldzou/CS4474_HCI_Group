@@ -8,4 +8,5 @@
 
 .btn-primary, .btn-primary.active{
     background-color: rgb(88 139 219);
+    border-color: rgb(88 139 219);
 }
