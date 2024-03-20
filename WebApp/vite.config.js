@@ -15,5 +15,6 @@ export default defineConfig({
   },
   build: {
     outDir: "../docs"
-  }
+  },
+  base: "/CS4474_HCI_Group"
 })
