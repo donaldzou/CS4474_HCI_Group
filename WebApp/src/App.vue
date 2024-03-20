@@ -4,7 +4,11 @@ import Navbar from "@/components/navbar.vue";
 </script>
 
 <template>
-	<RouterView></RouterView>
+	<router-view v-slot="{ Component }">
+		<transition name="fade" mode="out-in">
+			<component :is="Component" />
+		</transition>
+	</router-view>
 </template>
 
 <style scoped>

@@ -19,7 +19,7 @@ export default {
 			:class="[this.store.activeCircuit === this.buttonInfo.id ? 'btn-primary active':'btn-secondary']"
 	>
 		{{ buttonInfo.name }}
-		<a href="#" class="text-white ms-auto" style="transform: scale(1.2)">
+		<a role="button" class="text-white ms-auto" style="transform: scale(1.2)">
 			<i class="bi bi-x"></i>
 		</a>
 	</button>

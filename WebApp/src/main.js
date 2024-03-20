@@ -7,11 +7,29 @@ import {createRouter, createWebHashHistory} from "vue-router";
 import Welcome from "@/pages/welcome.vue";
 import Circuit from "@/pages/circuit.vue";
 import {supabase} from "@/supabase.js";
+import Signin from "@/components/signin.vue";
+import Signup from "@/components/signup.vue";
 const pinia = createPinia()
 
 const routes = [
     {
-        path: '/', component: Welcome
+        path: '/', component: Welcome,
+        children: [
+            {
+                path: '/',
+                redirect: '/signin'
+            },
+            {
+                path: '/signin',
+                name: "Sign In",
+                component: Signin
+            },
+            {
+                path: '/signup',
+                name: "Sign Up",
+                component: Signup
+            }
+        ]
     },
     {
         path: '/circuit', component: Circuit
@@ -28,16 +46,19 @@ router.beforeEach(async (to,
                          next) => {
     const {data, error} = await supabase.auth.getSession();
     const { session, user } = data
-    if (!session && to.path !== "/"){
+    if (!session && (to.path !== "/" && to.path !== "/signin" && to.path !== "/signup")){
         next("/")
     }else{
         next();
     }
+});
 
-
-
-
-
+const { data } = supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN') {
+        router.push("/circuit")
+    } else if (event === 'SIGNED_OUT') {
+        router.push("/")
+    }
 })
 
 const app = createApp(App)

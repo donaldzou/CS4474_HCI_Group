@@ -1,12 +1,37 @@
 <script>
 import CircuitNavBtn from "@/components/circuitNavBtn.vue";
 import {useSimulatorStore} from "@/store/simulatorStore.js";
+import {supabase} from "@/supabase.js";
 
 export default {
 	name: "navbar",
+	data(){
+		return {
+			username: ""
+		}
+	},
 	setup(){
 		const store = useSimulatorStore();
 		return {store}
+	},
+	methods: {
+		async signout(){
+			await supabase.auth.signOut({
+				redirect: '/'
+			})
+		},
+
+	},
+	async mounted() {
+		const { data: { user }, error } = await supabase.auth.getUser()
+		if (!error){
+			let dn = user.user_metadata.displayName;
+			if(dn.split(' ').length >= 2){
+				this.username = dn.split(' ')[0][0] + dn.split(' ')[1][0]
+			}else{
+				this.username = dn[0] + (dn[1] ? dn[1] : "");
+			}
+		}
 	},
 	components: {CircuitNavBtn}
 }
@@ -33,14 +58,30 @@ export default {
 					<div class="btn userInfoBtn p-0 d-flex"
 					     type="button" data-bs-toggle="dropdown" aria-expanded="false"
 					     style="border-radius: 50%; height: 100%; width: 38px;">
-						<span class="m-auto fw-bold">DZ</span>
+						<span class="m-auto fw-bold">{{this.username}}</span>
 						<ul class="dropdown-menu dropdown-menu-end me-1">
-							<li><a class="dropdown-item text-danger fw-bold" href="#">Sign Out</a></li>
+							<li>
+								<a class="dropdown-item text-danger fw-bold" role="button"
+									@click="this.signout()"
+								>Sign Out</a></li>
 						</ul>
 					</div>
 				</div>
 			</div>
 		</div>
+<!--		<div class="newCircuitModal d-flex">-->
+<!--			<div class="card m-auto" style="width: 400px">-->
+<!--				<div class="card-header d-flex">-->
+<!--					New Circuit-->
+<!--					<a role="button" class="ms-auto text-body">-->
+<!--						<i class="bi bi-x-lg"></i>-->
+<!--					</a>-->
+<!--				</div>-->
+<!--				<div class="card-body">-->
+
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
 	</nav>
 </template>
 
@@ -77,5 +118,16 @@ export default {
 
 .userInfoBtn{
 	background-color: rgb(255 154 81);
+}
+
+.newCircuitModal{
+	position: absolute;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	background-color: rgba(0, 0, 0, 0.35);
+	z-index: 1000;
+
 }
 </style>

@@ -1,22 +1,18 @@
 import {defineStore} from "pinia";
+import {supabase} from "@/supabase.js";
 
 export const useSimulatorStore = defineStore('Simulator Store', {
     state: () => ({
-        circuits: [
-            {
-                id: "abcd",
-                name: "Untitled Circuit #1"
-            },
-            {
-                id: "abcd1",
-                name: "Untitled Circuit #2"
-            }
-        ],
+        circuits: [],
         activeCircuit: "abcd"
     }),
     actions : {
         createCircuit(){
             
+        },
+        async getCircuits(){
+            const { data, error } = await supabase.from("circuits").select();
+            this.circuits = data;
         }
     }
 })
