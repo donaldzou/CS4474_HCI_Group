@@ -13,5 +13,8 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  build: {
+    outDir: "../docs"
+  },
   base: "/CS4474_HCI_Group/WebApp/dist/"
 })
