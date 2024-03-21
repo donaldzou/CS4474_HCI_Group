@@ -4,11 +4,20 @@ import {supabase} from "@/supabase.js";
 export const useSimulatorStore = defineStore('Simulator Store', {
     state: () => ({
         circuits: [],
-        activeCircuit: "abcd"
+        openedCircuits: [],
+        activeCircuit: undefined
     }),
     actions : {
-        createCircuit(){
-            
+        async createCircuit(circuitName){
+            const {data, error} = await supabase.from("circuits").insert({
+                circuitName: circuitName
+            });
+
+            if (!error){
+                await this.getCircuits();
+                return true
+            }
+            return false
         },
         async getCircuits(){
             const { data, error } = await supabase.from("circuits").select();

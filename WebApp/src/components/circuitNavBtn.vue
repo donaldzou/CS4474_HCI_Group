@@ -9,6 +9,14 @@ export default {
 	},
 	props: {
 		buttonInfo: Object
+	},
+	methods: {
+		closeCircuit(){
+			if (this.store.activeCircuit === this.buttonInfo.id){
+				this.store.activeCircuit = this.store.openedCircuits.find(x => x)?.id;
+			}
+			this.store.openedCircuits.splice(this.store.openedCircuits.findIndex(x => x === this.buttonInfo.id), 1)
+		}
 	}
 }
 </script>
@@ -18,8 +26,10 @@ export default {
 	        @click="this.store.activeCircuit = this.buttonInfo.id;"
 			:class="[this.store.activeCircuit === this.buttonInfo.id ? 'btn-primary active':'btn-secondary']"
 	>
-		{{ buttonInfo.name }}
-		<a role="button" class="text-white ms-auto" style="transform: scale(1.2)">
+		{{ buttonInfo.circuitName }}
+		<a role="button" class="text-white ms-auto"
+		   @click.stop.prevent="closeCircuit()"
+		   style="transform: scale(1.2)">
 			<i class="bi bi-x"></i>
 		</a>
 	</button>

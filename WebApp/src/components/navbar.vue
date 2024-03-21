@@ -2,12 +2,15 @@
 import CircuitNavBtn from "@/components/circuitNavBtn.vue";
 import {useSimulatorStore} from "@/store/simulatorStore.js";
 import {supabase} from "@/supabase.js";
+import NewCircuitModal from "@/components/newCircuitModal.vue";
 
 export default {
 	name: "navbar",
 	data(){
 		return {
-			username: ""
+			username: "",
+			newCircuitName: "",
+			showModal: false
 		}
 	},
 	setup(){
@@ -33,7 +36,14 @@ export default {
 			}
 		}
 	},
-	components: {CircuitNavBtn}
+	computed: {
+		openedCircuits(){
+			return this.store.openedCircuits.map(x => {
+				return this.store.circuits.find(k => k.id === x);
+			})
+		}
+	},
+	components: {NewCircuitModal, CircuitNavBtn}
 }
 </script>
 
@@ -41,10 +51,14 @@ export default {
 	<nav class="navbar py-3 fixed-top">
 		<div class="container-fluid">
 			<div class="d-flex gap-2 w-100">
-				<CircuitNavBtn :button-info="btn" v-for="btn in this.store.circuits"></CircuitNavBtn>
-				<button class="btn btn-secondary">
-					<i class="bi bi-plus"></i>
-				</button>
+				<div class="d-flex gap-2 flex-grow-1 overflow-scroll">
+					<CircuitNavBtn
+						:buttonInfo="btn"
+						v-for="btn in openedCircuits"></CircuitNavBtn>
+					<button class="btn btn-secondary" @click="showModal = true">
+						<i class="bi bi-plus"></i>
+					</button>
+				</div>
 				<div class="ms-auto d-flex align-items-center gap-3">
 					<a class="nav-link fw-bold me-2" style="color: var(--purple)" href="#">
 						Need Help? <i class=" ms-1 bi bi-search"></i>
@@ -69,19 +83,11 @@ export default {
 				</div>
 			</div>
 		</div>
-<!--		<div class="newCircuitModal d-flex">-->
-<!--			<div class="card m-auto" style="width: 400px">-->
-<!--				<div class="card-header d-flex">-->
-<!--					New Circuit-->
-<!--					<a role="button" class="ms-auto text-body">-->
-<!--						<i class="bi bi-x-lg"></i>-->
-<!--					</a>-->
-<!--				</div>-->
-<!--				<div class="card-body">-->
-
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
+		<Transition name="slide-fade">
+			<NewCircuitModal
+				@hideModal="showModal = false"
+				v-if="this.showModal"></NewCircuitModal>
+		</Transition>
 	</nav>
 </template>
 
