@@ -23,7 +23,19 @@ export default {
 				redirect: '/'
 			})
 		},
-
+		downloadCircuit(){
+			let circuit = this.store.circuits.find(x => x.id === this.store.activeCircuit);
+			if (circuit){
+				let str = JSON.stringify(circuit);
+				const blob = new Blob([str], { type: "application/json" });
+				const jsonObjectUrl = URL.createObjectURL(blob);
+				const filename = `${circuit.circuitName}.json`;
+				const anchorEl = document.createElement("a");
+				anchorEl.href = jsonObjectUrl;
+				anchorEl.download = filename;
+				anchorEl.click();
+			}
+		}
 	},
 	async mounted() {
 		const { data: { user }, error } = await supabase.auth.getUser()
@@ -63,9 +75,15 @@ export default {
 					<a class="nav-link fw-bold me-2" style="color: var(--purple)" href="#">
 						Need Help? <i class=" ms-1 bi bi-search"></i>
 					</a>
-					<div class="btn-group btnShareGroup" role="group" aria-label="Basic outlined example">
-						<button type="button" class="btn btn-primary"><i class="bi bi-send me-2"></i>Share</button>
-						<button type="button" class="btn btn-outline-primary">
+					<div class="btn-group btnShareGroup" role="group">
+						<button type="button" class="btn btn-primary"
+						        @click="this.downloadCircuit()"
+							:disabled="!this.store.activeCircuit"
+						><i class="bi bi-send me-2"></i>Share</button>
+						<button type="button" class="btn btn-outline-primary"
+						        @click="this.downloadCircuit()"
+					        :disabled="!this.store.activeCircuit"
+						>
 							<i class="bi bi-link-45deg"></i>
 						</button>
 					</div>

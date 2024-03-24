@@ -10,6 +10,7 @@ export default {
 	data(){
 		return{
 			newCircuitName: "",
+			fileSelected: false
 		}
 	},
 	methods: {
@@ -24,6 +25,25 @@ export default {
 			}
 			this.store.activeCircuit = c.id
 			this.$emit('hideModal')
+		},
+		async handleFile(e){
+			if (e.target.files.length === 1){
+				this.fileSelected = true;
+				let f = e.target.files[0];
+				let fileReader = new FileReader();
+				fileReader.readAsText(f);
+				fileReader.onloadend = async (r) => {
+					let name = JSON.parse(r.target.result);
+					if (name.circuitName){
+						this.newCircuitName = name.circuitName;
+						await this.submitNewCircuit();
+						e.target.value = '';
+						this.fileSelected = false;
+					}
+				}
+			}else{
+				this.fileSelected = false;
+			}
 		}
 	}
 }
@@ -44,7 +64,14 @@ export default {
 					<input class="form-control mb-3" type="text"
 					       id="newCircuitNameInput"
 					       v-model="newCircuitName">
-					<button class="btn btn-primary w-100" @click="submitNewCircuit()">Create</button>
+					<button class="btn btn-primary w-100 mb-2" @click="submitNewCircuit()">Create</button>
+
+					<small>Or upload a circuit</small>
+					<div class="d-flex gap-2 mt-1">
+						<input class="form-control" type="file" @change="(e) => {handleFile(e)}">
+						<button class="btn btn-primary" :disabled="!this.fileSelected">Upload</button>
+					</div>
+
 				</div>
 				<hr>
 				<div>
