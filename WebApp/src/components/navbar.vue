@@ -3,6 +3,7 @@ import CircuitNavBtn from "@/components/circuitNavBtn.vue";
 import {useSimulatorStore} from "@/store/simulatorStore.js";
 import {supabase} from "@/supabase.js";
 import NewCircuitModal from "@/components/newCircuitModal.vue";
+import HelpMenu from "@/components/helpMenu.vue";
 
 export default {
 	name: "navbar",
@@ -10,7 +11,8 @@ export default {
 		return {
 			username: "",
 			newCircuitName: "",
-			showModal: false
+			showModal: false,
+			showHelpMenu: false
 		}
 	},
 	setup(){
@@ -55,7 +57,7 @@ export default {
 			})
 		}
 	},
-	components: {NewCircuitModal, CircuitNavBtn}
+	components: {HelpMenu, NewCircuitModal, CircuitNavBtn}
 }
 </script>
 
@@ -72,7 +74,9 @@ export default {
 					</button>
 				</div>
 				<div class="ms-auto d-flex align-items-center gap-3">
-					<a class="nav-link fw-bold me-2" style="color: var(--purple)" href="#">
+					<a class="nav-link fw-bold me-2" style="color: var(--purple)" @click="this.showHelpMenu = true"
+						role="button"
+					>
 						Need Help? <i class=" ms-1 bi bi-search"></i>
 					</a>
 					<div class="btn-group btnShareGroup" role="group">
@@ -105,6 +109,9 @@ export default {
 			<NewCircuitModal
 				@hideModal="showModal = false"
 				v-if="this.showModal"></NewCircuitModal>
+		</Transition>
+		<Transition name="slide-fade">
+			<HelpMenu v-if="this.showHelpMenu" @hideModal="this.showHelpMenu = false"></HelpMenu>
 		</Transition>
 	</nav>
 </template>
@@ -153,5 +160,9 @@ export default {
 	background-color: rgba(0, 0, 0, 0.35);
 	z-index: 1000;
 
+}
+
+::-webkit-scrollbar{
+	display: none;
 }
 </style>
