@@ -20,13 +20,13 @@ export default {
 	<div class="d-flex flex-column h-100">
 		<Navbar></Navbar>
 		<div id="canvas" class="flex-grow-1">
-			<div class="w-100 h-100 "
+			<div class="w-100 position-absolute iframe"
+			     style="height: calc(100% - 70px - 66px);"
 			     v-for="c in this.store.openedCircuits"
-			     :key="c"
+			     :key="''+c+''"
 			     :class="{'active': this.store.activeCircuit === c}"
 			>
 				<iframe src="https://scratch.mit.edu/projects/976361152/embed"
-
 				        allowfullscreen
 				        allowtransparency="true" style="height: 100%; width: 100%;">
 
@@ -39,10 +39,10 @@ export default {
 
 <style scoped>
 .iframe{
-	display: none
+	z-index: 1;
 }
 
 .iframe.active{
-	display: block !important;
+	z-index: 10;
 }
 </style>
