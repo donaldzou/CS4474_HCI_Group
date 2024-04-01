@@ -21,7 +21,7 @@ export default {
 		<Navbar></Navbar>
 		<div id="canvas" class="flex-grow-1">
 			<div class="w-100 position-absolute iframe"
-			     style="height: calc(100% - 70px - 66px);"
+			     style="height: calc(100% - 70px);"
 			     v-for="c in this.store.openedCircuits"
 			     :key="''+c+''"
 			     :class="{'active': this.store.activeCircuit === c}"
@@ -33,7 +33,7 @@ export default {
 				</iframe>
 			</div>
 		</div>
-		<BottomNavBar></BottomNavBar>
+<!--		<BottomNavBar></BottomNavBar>-->
 	</div>
 </template>
 
