@@ -62,7 +62,7 @@ export default {
 </script>
 
 <template>
-	<nav class="navbar py-3 fixed-top">
+	<nav class="navbar py-3 sticky-top">
 		<div class="container-fluid">
 			<div class="d-flex gap-2 w-100">
 				<div class="d-flex gap-2 flex-grow-1 overflow-scroll">

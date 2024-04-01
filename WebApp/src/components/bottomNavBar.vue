@@ -11,7 +11,7 @@ export default {
 </script>
 
 <template>
-	<nav class="navbar bg-dark text-white fixed-bottom py-1">
+	<nav class="navbar bg-dark text-white sticky-bottom py-1">
 		<div class="container-fluid">
 			<h3 class="mb-0">
 				Circuit Construction Kit: AC
