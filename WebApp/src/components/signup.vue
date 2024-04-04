@@ -30,7 +30,7 @@ export default {
 				console.log(data, error)
 				if (!error){
 					await sb.auth.setSession(data.session);
-
+					this.$emit("hideModal")
 				}else{
 					this.error = true;
 					this.errorMsg = error.message;
@@ -55,7 +55,7 @@ export default {
 		<div class="row gy-4">
 			<div class="col-sm-12">
 				<label for="nameInput" class="form-label">Name</label>
-				<input type="email" class="form-control form-control-lg"
+				<input type="email" class="form-control"
 				       v-model="name"
 				       @keyup.enter="this.signup()"
 				       :disabled="this.loading"
@@ -63,7 +63,7 @@ export default {
 			</div>
 			<div class="col-sm-6">
 				<label for="emailInput" class="form-label">Email address</label>
-				<input type="email" class="form-control form-control-lg"
+				<input type="email" class="form-control"
 				       v-model="email"
 				       @keyup.enter="this.signup()"
 				       :disabled="this.loading"
@@ -71,14 +71,14 @@ export default {
 			</div>
 			<div class="col-sm-6">
 				<label for="passwordInput" class="form-label">Password</label>
-				<input type="password" class="form-control form-control-lg"
+				<input type="password" class="form-control"
 				       v-model="password"
 				       @keyup.enter="this.signup()"
 				       :disabled="this.loading"
 				       id="passwordInput">
 			</div>
 			<div class="col-12">
-				<button class="btn btn-lg bg-body w-100"
+				<button class="btn btn-outline-primary w-100"
 				        :disabled="this.loading || (!this.email || !this.password || !this.name)"
 				        @click="this.signup()">
 					{{this.loading ? "Signing Up...":"Sign Up"}}

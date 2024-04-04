@@ -2,17 +2,27 @@
 import Navbar from "@/components/navbar.vue";
 import {useSimulatorStore} from "@/store/simulatorStore.js";
 import BottomNavBar from "@/components/bottomNavBar.vue";
+import {supabase} from "@/supabase.js";
 
 export default {
 	name: "circuit",
 	components: {BottomNavBar, Navbar},
-	setup(){
+	async setup(){
 		const store = useSimulatorStore();
+		const {data: {session}} = await supabase.auth.getSession();
+		store.signedIn = session !== null;
 		return {store}
 	},
 	async mounted() {
-		await this.store.getCircuits()
-	}
+
+	},
+	watch: {
+		async 'store.signedIn'(newVal){
+			if(newVal){
+				await this.store.getCircuits()
+			}
+		}
+	},
 }
 </script>
 
@@ -29,8 +39,12 @@ export default {
 				<iframe src="https://scratch.mit.edu/projects/976361152/embed"
 				        allowfullscreen
 				        allowtransparency="true" style="height: 100%; width: 100%;">
-
 				</iframe>
+			</div>
+			<div class="w-100 h-100 d-flex">
+				<h1 class="display-1 text-muted m-auto text-center">
+					Click <i class="bi bi-plus"></i> at the top left to open/create circuits
+				</h1>
 			</div>
 		</div>
 <!--		<BottomNavBar></BottomNavBar>-->

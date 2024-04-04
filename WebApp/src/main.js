@@ -12,27 +12,27 @@ import Signup from "@/components/signup.vue";
 const pinia = createPinia()
 
 const routes = [
+    // {
+    //     path: '/', component: Welcome,
+    //     children: [
+    //         {
+    //             path: '/',
+    //             redirect: '/signin'
+    //         },
+    //         {
+    //             path: '/signin',
+    //             name: "Sign In",
+    //             component: Signin
+    //         },
+    //         {
+    //             path: '/signup',
+    //             name: "Sign Up",
+    //             component: Signup
+    //         }
+    //     ]
+    // },
     {
-        path: '/', component: Welcome,
-        children: [
-            {
-                path: '/',
-                redirect: '/signin'
-            },
-            {
-                path: '/signin',
-                name: "Sign In",
-                component: Signin
-            },
-            {
-                path: '/signup',
-                name: "Sign Up",
-                component: Signup
-            }
-        ]
-    },
-    {
-        path: '/circuit', component: Circuit
+        path: '/', component: Circuit
     }
 ]
 
@@ -41,25 +41,19 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach(async (to,
-                         from,
-                         next) => {
-    const {data, error} = await supabase.auth.getSession();
-    const { session, user } = data
-    if (!session && (to.path !== "/" && to.path !== "/signin" && to.path !== "/signup")){
-        next("/")
-    }else{
-        next();
-    }
-});
+// router.beforeEach(async (to,
+//                          from,
+//                          next) => {
+//     const {data, error} = await supabase.auth.getSession();
+//     const { session, user } = data
+//     if (!session && (to.path !== "/" && to.path !== "/signin" && to.path !== "/signup")){
+//         next("/")
+//     }else{
+//         next();
+//     }
+// });
 
-const { data } = supabase.auth.onAuthStateChange((event, session) => {
-    if (event === 'SIGNED_IN') {
-        router.push("/circuit")
-    } else if (event === 'SIGNED_OUT') {
-        router.push("/")
-    }
-})
+
 
 const app = createApp(App)
 

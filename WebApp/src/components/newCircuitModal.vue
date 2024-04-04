@@ -1,5 +1,6 @@
 <script>
 import {useSimulatorStore} from "@/store/simulatorStore.js";
+import {v4} from "uuid";
 
 export default {
 	name: "newCircuitModal",
@@ -15,9 +16,16 @@ export default {
 	},
 	methods: {
 		async submitNewCircuit(){
-			const success = await this.store.createCircuit(this.newCircuitName);
-			if (success) this.newCircuitName = "";
-			// this.$emit("hideModal");
+			if (this.store.signedIn){
+				const success = await this.store.createCircuit(this.newCircuitName);
+				if (success) this.newCircuitName = "";
+			}else{
+				this.store.circuits.push({
+					id: v4(),
+					circuitName: this.newCircuitName,
+				})
+				this.newCircuitName = "";
+			}
 		},
 		openCircuit(c){
 			if (!this.store.openedCircuits.find(x => x === c.id)){
@@ -76,7 +84,7 @@ export default {
 				<hr>
 				<div>
 					<p class="mb-1">Open a circuit</p>
-					<div class="list-group">
+					<div class="list-group" v-if="this.store.signedIn">
 						<a role="button" class="list-group-item"
 						   @click="openCircuit(c)"
 						   v-for="c in store.circuits">
@@ -86,6 +94,12 @@ export default {
 							class="text-muted"
 							v-if="store.circuits.length === 0">
 							You don't have any circuit yet.
+						</small>
+					</div>
+					<div v-else>
+						<small
+							class="text-muted">
+							Sign In to access your circuits on the cloud
 						</small>
 					</div>
 				</div>

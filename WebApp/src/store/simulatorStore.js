@@ -3,6 +3,7 @@ import {supabase} from "@/supabase.js";
 
 export const useSimulatorStore = defineStore('Simulator Store', {
     state: () => ({
+        signedIn: false,
         circuits: [],
         openedCircuits: [],
         activeCircuit: undefined

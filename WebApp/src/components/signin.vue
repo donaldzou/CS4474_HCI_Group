@@ -23,7 +23,7 @@ export default {
 				});
 				if (!error){
 					await sb.auth.setSession(data.session);
-					this.$router.push("/circuit");
+					this.$emit("hideModal")
 				}else{
 					this.error = true;
 					this.errorMsg = error.message;
@@ -47,7 +47,7 @@ export default {
 		<div class="row gy-4">
 			<div class="col-12">
 				<label for="emailInput" class="form-label">Email address</label>
-				<input type="email" class="form-control form-control-lg"
+				<input type="email" class="form-control"
 				       @keyup.enter="this.signin()"
 				       v-model="this.email"
 				       :disabled="this.loading"
@@ -55,14 +55,14 @@ export default {
 			</div>
 			<div class="col-12">
 				<label for="passwordInput" class="form-label">Password</label>
-				<input type="password" class="form-control form-control-lg"
+				<input type="password" class="form-control"
 				       @keyup.enter="this.signin()"
 				       v-model="this.password"
 				       :disabled="this.loading"
 				       id="passwordInput">
 			</div>
 			<div class="col-12">
-				<button class="btn btn-lg bg-body w-100"
+				<button class="btn btn-outline-primary w-100"
 				        :disabled="this.loading || (!this.email || !this.password)"
 				        @click="this.signin()">
 					{{this.loading ? "Signing In...":"Sign In"}}

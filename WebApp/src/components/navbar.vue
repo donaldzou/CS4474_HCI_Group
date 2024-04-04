@@ -4,6 +4,7 @@ import {useSimulatorStore} from "@/store/simulatorStore.js";
 import {supabase} from "@/supabase.js";
 import NewCircuitModal from "@/components/newCircuitModal.vue";
 import HelpMenu from "@/components/helpMenu.vue";
+import SignInModal from "@/components/signInModal.vue";
 
 export default {
 	name: "navbar",
@@ -12,7 +13,8 @@ export default {
 			username: "",
 			newCircuitName: "",
 			showModal: false,
-			showHelpMenu: false
+			showHelpMenu: false,
+			showSignInModal: false,
 		}
 	},
 	setup(){
@@ -40,15 +42,8 @@ export default {
 		}
 	},
 	async mounted() {
-		const { data: { user }, error } = await supabase.auth.getUser()
-		if (!error){
-			let dn = user.user_metadata.displayName;
-			if(dn.split(' ').length >= 2){
-				this.username = dn.split(' ')[0][0] + dn.split(' ')[1][0]
-			}else{
-				this.username = dn[0] + (dn[1] ? dn[1] : "");
-			}
-		}
+
+		this.showModal = true;
 	},
 	computed: {
 		openedCircuits(){
@@ -57,7 +52,26 @@ export default {
 			})
 		}
 	},
-	components: {HelpMenu, NewCircuitModal, CircuitNavBtn}
+	watch: {
+		 'store.signedIn': {
+			 immediate: true,
+			 async handler(newVal){
+				 if(newVal){
+					 const { data: { user }, error } = await supabase.auth.getUser()
+					 if (!error){
+						 let dn = user.user_metadata.displayName;
+						 if(dn.split(' ').length >= 2){
+							 this.username = dn.split(' ')[0][0] + dn.split(' ')[1][0]
+						 }else{
+							 this.username = dn[0] + (dn[1] ? dn[1] : "");
+						 }
+					 }
+				 }
+			 }
+		}
+	},
+
+	components: {SignInModal, HelpMenu, NewCircuitModal, CircuitNavBtn}
 }
 </script>
 
@@ -92,6 +106,7 @@ export default {
 						</button>
 					</div>
 					<div class="btn userInfoBtn p-0 d-flex"
+					     v-if="this.store.signedIn"
 					     type="button" data-bs-toggle="dropdown" aria-expanded="false"
 					     style="border-radius: 50%; height: 100%; width: 38px;">
 						<span class="m-auto fw-bold">{{this.username}}</span>
@@ -101,6 +116,14 @@ export default {
 									@click="this.signout()"
 								>Sign Out</a></li>
 						</ul>
+					</div>
+					<div class="d-flex gap-2 align-items-center" v-else>
+						<a class="fw-bold text-decoration-none" role="button"
+						   @click="this.showSignInModal = true;"
+						   style="color: var(--purple);">
+							Sign In
+							<i class="ms-1 bi bi-box-arrow-in-right"></i>
+						</a>
 					</div>
 				</div>
 			</div>
@@ -112,6 +135,9 @@ export default {
 		</Transition>
 		<Transition name="slide-fade">
 			<HelpMenu v-if="this.showHelpMenu" @hideModal="this.showHelpMenu = false"></HelpMenu>
+		</Transition>
+		<Transition name="slide-fade">
+			<SignInModal v-if="this.showSignInModal" @hideModal="this.showSignInModal = false"></SignInModal>
 		</Transition>
 	</nav>
 </template>
