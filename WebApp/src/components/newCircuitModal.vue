@@ -20,10 +20,13 @@ export default {
 				const success = await this.store.createCircuit(this.newCircuitName);
 				if (success) this.newCircuitName = "";
 			}else{
+				let id = v4();
 				this.store.circuits.push({
-					id: v4(),
+					id: id,
 					circuitName: this.newCircuitName,
-				})
+				});
+				this.store.openedCircuits.push(id)
+				this.store.activeCircuit = id;
 				this.newCircuitName = "";
 			}
 		},
