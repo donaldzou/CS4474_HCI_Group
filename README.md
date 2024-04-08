@@ -1,29 +1,24 @@
-# circuit_construction_ac
+# CS 4474 Human Computer Interaction
 
-This template should help get you started developing with Vue 3 in Vite.
+**Group 1**
 
-## Recommended IDE Setup
+- Yash Gupta (ygupta7@uwo.ca)
+- Qianyi Luo (qluo42@uwo.ca)
+- Andrew Stephen Mohammed (amoha464@uwo.ca)
+- Alexander Turgeon (aturgeo3@uwo.ca)
+- Donald Cheng Hong Zou (dzou23@uwo.ca)
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## How to run?
 
-## Customize configuration
+### Recommended
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+Access directly to the GitHub page: https://donaldzou.github.io/CS4474_HCI_Group/
 
-## Project Setup
+### Run it locally
 
-```sh
-npm install
-```
+> Will be using Python 3.x to create a web server
 
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Compile and Minify for Production
-
-```sh
-npm run build
-```
+1. Git clone the repo and unzip it to your computer
+2. Navigate to the folder with terminal/console
+3. Run `python -m http.server 9000` or `python3 -m http.server 9000`
+4. Access `localhost:9000/docs` from your browser
